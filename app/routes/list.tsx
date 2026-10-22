@@ -12,7 +12,7 @@ export function meta({}: Route.MetaArgs) {
 export async function clientLoader() {
 
   //-------------------------------------------------------
-  // 로그인 시도
+  // 로그인 시도 를 삭제해도 다시 들어가짐
   //-------------------------------------------------------
   const { error } = await supabase.auth.signInWithPassword({
       email: "kjlim@test.com",
