@@ -13,10 +13,12 @@
 
 html,
 body {
-  /*@apply bg-white dark:bg-gray-950;*/
   @apply bg-background text-foreground antialiased;
+}
 
-  @media (prefers-color-scheme: dark) {
+@media (prefers-color-scheme: dark) {
+  html,
+  body {
     color-scheme: dark;
   }
 }

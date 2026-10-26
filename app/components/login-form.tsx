@@ -15,57 +15,82 @@ import {
   FieldLabel,
 } from "@/components/ui/field"
 import { Input } from "@/components/ui/input"
+import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert"
+
+import { Link  } from "react-router"
+
+interface LoginFormProps {
+  className?: string
+  email: string
+  password: string
+  onEmailChange: (value: string) => void
+  onPasswordChange: (value: string) => void
+  onSubmit: (e: React.SubmitEvent<HTMLFormElement>) => void
+  loading: boolean
+  error: string | null
+}
 
 export function LoginForm({
   className,
-  ...props
-}: React.ComponentProps<"div">) {
+  email,
+  password,
+  onEmailChange,
+  onPasswordChange,
+  onSubmit,
+  loading,
+  error,
+}: LoginFormProps) {
   return (
-    <div className={cn("flex flex-col gap-6", className)} {...props}>
-      <Card>
-        <CardHeader>
-          <CardTitle>Login to your account</CardTitle>
-          <CardDescription>
-            Enter your email below to login to your account
-          </CardDescription>
-        </CardHeader>
-        <CardContent>
-          <form>
-            <FieldGroup>
-              <Field>
-                <FieldLabel htmlFor="email">Email</FieldLabel>
-                <Input
-                  id="email"
-                  type="email"
-                  placeholder="m@example.com"
-                  required
-                />
-              </Field>
-              <Field>
-                <div className="flex items-center">
-                  <FieldLabel htmlFor="password">Password</FieldLabel>
-                  <a
-                    href="#"
-                    className="ml-auto inline-block text-sm underline-offset-4 hover:underline"
-                  >
-                    Forgot your password?
-                  </a>
+    <Card className={cn("flex flex-col gap-6", className)}>
+      <CardHeader>
+        <CardTitle>Login to your account</CardTitle>
+        <CardDescription>
+          Enter your email below to login to your account
+        </CardDescription>
+      </CardHeader>
+      <CardContent>
+        <form
+          onSubmit={ onSubmit }>
+          <FieldGroup>
+            <Field>
+              <FieldLabel htmlFor="email">Email</FieldLabel>
+              <Input
+                id="email"
+                type="email"
+                placeholder="m@example.com"
+                value={email}
+                onChange={(e) => onEmailChange(e.target.value)}
+                required
+              />
+            </Field>
+            <Field>
+              <div className="flex items-center">
+                <FieldLabel htmlFor="password">Password</FieldLabel>
                 </div>
-                <Input id="password" type="password" required />
-              </Field>
-              <Field>
-                <Button type="submit">Login</Button>
-                <Button variant="outline" type="button">
-                  Login with Google
-                </Button>
-                <FieldDescription className="text-center">
-                  Don&apos;t have an account? <a href="#">Sign up</a>
-                </FieldDescription>
-              </Field>
-            </FieldGroup>
-          </form>
-        </CardContent>
-      </Card>
-    </div>
+              <Input 
+                id="password" 
+                type="password" 
+                value={password}
+                onChange={(e) => onPasswordChange(e.target.value)}
+                required />
+            </Field>
+            
+            {error && (
+              <Alert variant="destructive">
+                <AlertTitle>로그인 실패</AlertTitle>
+                <AlertDescription>{error}</AlertDescription>
+              </Alert>
+            )}
+
+            <Field>
+              <Button type="submit">Login</Button>
+              <FieldDescription className="text-center">
+                계정이 없으신가요? <Link to="/signup">회원 가입</Link>
+              </FieldDescription>
+            </Field>
+          </FieldGroup>
+        </form>
+      </CardContent>
+    </Card>
   )
 }
