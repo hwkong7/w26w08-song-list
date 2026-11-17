@@ -16,6 +16,12 @@ body {
   @apply bg-background text-foreground antialiased;
 }
 
+/* Edge가 비밀번호 칸에 자동으로 넣는 '보기' 버튼 숨기기 (직접 만든 보기 버튼과 겹치지 않게) */
+input::-ms-reveal,
+input::-ms-clear {
+  display: none;
+}
+
 @media (prefers-color-scheme: dark) {
   html,
   body {

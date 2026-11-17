@@ -2,6 +2,7 @@ import { useState } from "react"
 import { useAuthStore } from "../lib/auth-store"
 import { useNavigate } from "react-router"
 import { LoginForm as ShadcnLoginForm } from "@/components/login-form"
+import { AuthShell } from "@/components/auth-shell"
 
 export default function LoginForm() {
   const { signIn, status } = useAuthStore()
@@ -45,9 +46,10 @@ export default function LoginForm() {
   // )
 
   return (
-    <div className="flex min-h-[calc(100svh-4rem)] justify-center items-center px-4">
+    <AuthShell
+      title="다시 만나서 반가워요"
+      description="로그인하고 나의 애창곡 리스트를 이어서 채워 보세요.">
       <ShadcnLoginForm
-        className="w-full max-w-sm"
         email={email}
         password={password}
         onEmailChange={setEmail}
@@ -56,6 +58,6 @@ export default function LoginForm() {
         loading={status === "loading"}
         error={error}
       />
-    </div>
+    </AuthShell>
   )
 }

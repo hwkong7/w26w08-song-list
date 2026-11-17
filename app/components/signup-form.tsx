@@ -13,10 +13,13 @@ import {
   FieldGroup,
   FieldLabel,
 } from "@/components/ui/field"
-import { Input } from "@/components/ui/input"
 import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert"
+import { GithubButton, IconInput, PasswordInput } from "@/components/auth-shell"
 
-import { Link  } from "react-router"
+import { HugeiconsIcon } from "@hugeicons/react"
+import { Mail01Icon, UserAdd01Icon } from "@hugeicons/core-free-icons"
+
+import { Link } from "react-router"
 
 interface SignupFormProps {
   email: string
@@ -28,6 +31,7 @@ interface SignupFormProps {
   onSubmit: (e: React.SubmitEvent<HTMLFormElement>) => void
   loading: boolean
   error: string | null
+  notice?: string | null // 성공 안내 (예: 이메일 인증 안내)
   className?: string
 }
 
@@ -42,70 +46,77 @@ export function SignupForm({
   onSubmit,
   loading,
   error,
+  notice,
 }: SignupFormProps) {
   return (
-    <Card className={cn("flex flex-col gap-6", className)}>
+    <Card className={cn("gap-6 rounded-2xl bg-card/70 py-7 backdrop-blur-xl", className)}>
       <CardHeader>
-        <CardTitle>Create an account</CardTitle>
-        <CardDescription>
-          Enter your information below to create your account
+        <CardTitle className="text-xl font-bold">새 계정 만들기</CardTitle>
+        <CardDescription className="text-sm">
+          나만의 애창곡 보관함을 시작해 보세요.
         </CardDescription>
       </CardHeader>
       <CardContent>
-        <form
-          onSubmit={ onSubmit }>
+        <form onSubmit={onSubmit}>
           <FieldGroup>
             <Field>
-              <FieldLabel htmlFor="email">Email</FieldLabel>
-              <Input
+              <FieldLabel htmlFor="email" className="text-sm font-semibold">이메일</FieldLabel>
+              <IconInput
                 id="email"
                 type="email"
-                placeholder="m@example.com"
+                icon={Mail01Icon}
+                placeholder="you@example.com"
                 value={email}
                 onChange={(e) => onEmailChange(e.target.value)}
                 required
               />
-              <FieldDescription>
-                We&apos;ll use this to contact you. We will not share your email
-                with anyone else.
-              </FieldDescription>
+              <FieldDescription>로그인과 계정 확인에 사용됩니다.</FieldDescription>
             </Field>
             <Field>
-              <FieldLabel htmlFor="password">Password</FieldLabel>
-              <Input 
-                id="password" 
-                type="password" 
+              <FieldLabel htmlFor="password" className="text-sm font-semibold">비밀번호</FieldLabel>
+              <PasswordInput
+                id="password"
+                placeholder="8자 이상 입력해 주세요"
+                minLength={8}
                 value={password}
                 onChange={(e) => onPasswordChange(e.target.value)}
                 required />
-              <FieldDescription>
-                Must be at least 8 characters long.
-              </FieldDescription>
+              <FieldDescription>8자 이상 입력해 주세요.</FieldDescription>
             </Field>
             <Field>
-              <FieldLabel htmlFor="confirm-password">
-                Confirm Password
+              <FieldLabel htmlFor="confirm-password" className="text-sm font-semibold">
+                비밀번호 확인
               </FieldLabel>
-              <Input 
-                id="confirm-password" 
-                type="password" 
+              <PasswordInput
+                id="confirm-password"
+                placeholder="비밀번호를 한 번 더 입력해 주세요"
                 value={passwordConfirm}
                 onChange={(e) => onPasswordConfirmChange(e.target.value)}
                 required />
-              <FieldDescription>Please confirm your password.</FieldDescription>
             </Field>
 
             {error && (
               <Alert variant="destructive">
-                <AlertTitle>로그인 실패</AlertTitle>
+                <AlertTitle>회원가입 실패</AlertTitle>
                 <AlertDescription>{error}</AlertDescription>
               </Alert>
             )}
 
+            {notice && (
+              <Alert>
+                <AlertTitle>거의 다 됐어요!</AlertTitle>
+                <AlertDescription>{notice}</AlertDescription>
+              </Alert>
+            )}
+
             <Field>
-              <Button type="submit">Create Account</Button>
-              <FieldDescription className="px-6 text-center">
-                계정이 이미 있으신가요? <Link to="/login">로그인</Link>
+              <Button type="submit" className="h-11 w-full rounded-xl text-sm font-semibold" disabled={loading}>
+                <HugeiconsIcon icon={UserAdd01Icon} className="size-4" />
+                {loading ? "가입 중..." : "회원가입"}
+              </Button>
+              <GithubButton />
+              <FieldDescription className="text-center text-sm">
+                이미 계정이 있으신가요? <Link to="/login" className="font-semibold text-foreground">로그인</Link>
               </FieldDescription>
             </Field>
           </FieldGroup>
